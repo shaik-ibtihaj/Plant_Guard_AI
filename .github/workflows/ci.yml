@@ -1,0 +1,105 @@
+name: Plant Guard AI - CI Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  # ─────────────────────────────────────────
+  # AI / Python Backend Tests
+  # ─────────────────────────────────────────
+  ai-tests:
+    name: AI Module Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run AI module tests (placeholder)
+        run: |
+          # TODO: Replace with actual test runner commands
+          echo "Running AI module tests..."
+          python -m pytest tests/ -v --tb=short || echo "No tests found yet - placeholder step"
+
+  # ─────────────────────────────────────────
+  # Backend Tests
+  # ─────────────────────────────────────────
+  backend-tests:
+    name: Backend API Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run backend tests (placeholder)
+        run: |
+          # TODO: Replace with actual pytest commands for FastAPI
+          echo "Running backend tests..."
+          cd backend && python -m pytest tests/ -v --tb=short || echo "No tests found yet - placeholder step"
+
+  # ─────────────────────────────────────────
+  # Frontend Tests
+  # ─────────────────────────────────────────
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci || npm install
+
+      - name: Run frontend tests (placeholder)
+        run: |
+          cd frontend
+          # TODO: Replace with actual test runner (vitest, jest, etc.)
+          echo "Running frontend tests..."
+          npm test -- --run || echo "No tests found yet - placeholder step"
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build || echo "Build step - placeholder"

@@ -1,0 +1,3 @@
+# scripts/
+Utility shell/Python scripts for automation tasks.
+Examples: download_data.sh, preprocess_all.py, export_model.py

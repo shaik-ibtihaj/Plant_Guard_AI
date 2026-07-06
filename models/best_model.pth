@@ -1,0 +1,11 @@
+# best_model.pth
+# ===============
+# This file will contain the best-performing trained model weights.
+# It will be populated after Phase 3 (Model Training) is complete.
+#
+# Expected format: PyTorch state_dict saved via torch.save()
+#
+# To load: model.load_state_dict(torch.load("models/best_model.pth"))
+#
+# Placeholder: DO NOT use this file for inference until training completes.
+PLACEHOLDER_BEST_MODEL = True

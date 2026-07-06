@@ -1,0 +1,2 @@
+# models/checkpoints/
+Training checkpoints saved during model training (e.g., epoch_10.pth).

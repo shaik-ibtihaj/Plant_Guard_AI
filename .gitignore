@@ -1,0 +1,92 @@
+# ──────────────────────────────────────────
+# Python
+# ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ──────────────────────────────────────────
+# Machine Learning
+# ──────────────────────────────────────────
+# Model weights (large binary files — track with DVC or Git LFS)
+models/checkpoints/*.pth
+models/exported/
+# Keep best_model.pth placeholder
+!models/best_model.pth
+
+# Datasets (do not commit raw/processed data)
+datasets/raw/
+datasets/processed/
+# Keep metadata
+!datasets/metadata/
+
+# MLflow / W&B experiment logs
+mlruns/
+wandb/
+
+# ──────────────────────────────────────────
+# Jupyter Notebooks
+# ──────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ──────────────────────────────────────────
+# Node / Frontend
+# ──────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+*.tsbuildinfo
+
+# ──────────────────────────────────────────
+# Docker
+# ──────────────────────────────────────────
+docker-compose.override.yml
+
+# ──────────────────────────────────────────
+# Environment & Secrets
+# ──────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.env
+
+# ──────────────────────────────────────────
+# IDE & OS
+# ──────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ──────────────────────────────────────────
+# Testing & Coverage
+# ──────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+
+# ──────────────────────────────────────────
+# Logs
+# ──────────────────────────────────────────
+*.log
+logs/
