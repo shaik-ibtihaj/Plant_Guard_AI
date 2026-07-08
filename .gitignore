@@ -19,23 +19,52 @@ env/
 ENV/
 
 # ──────────────────────────────────────────
-# Machine Learning
+# Machine Learning / AI
 # ──────────────────────────────────────────
-# Model weights (large binary files — track with DVC or Git LFS)
-models/checkpoints/*.pth
+
+# Model checkpoints & exports
+models/checkpoints/
 models/exported/
-# Keep best_model.pth placeholder
+models/weights/
+models/runs/
+models/logs/
+
+# Keep placeholder file if needed
 !models/best_model.pth
 
-# Datasets (do not commit raw/processed data)
-datasets/raw/
-datasets/processed/
-# Keep metadata
-!datasets/metadata/
+# TensorBoard
+runs/
 
-# MLflow / W&B experiment logs
+# Experiment tracking
 mlruns/
 wandb/
+
+# ──────────────────────────────────────────
+# Datasets
+# ──────────────────────────────────────────
+
+# Raw datasets
+datasets/raw/
+
+# Intermediate merged dataset
+datasets/intermediate/
+
+# Final processed dataset
+datasets/processed/
+
+# Quarantine folder
+datasets/quarantine/
+
+# Generated reports
+datasets/metadata/*.csv
+datasets/metadata/*.json
+datasets/metadata/*.txt
+
+# Keep metadata folder structure
+!datasets/metadata/.gitkeep
+
+# Keep dataset root structure
+!datasets/.gitkeep
 
 # ──────────────────────────────────────────
 # Jupyter Notebooks
@@ -90,3 +119,10 @@ coverage.xml
 # ──────────────────────────────────────────
 *.log
 logs/
+
+# ──────────────────────────────────────────
+# Temporary Files
+# ──────────────────────────────────────────
+tmp/
+temp/
+.cache/
