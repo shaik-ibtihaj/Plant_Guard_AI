@@ -1,0 +1,9 @@
+PlantGuard AI - Dataset Cleaning Summary
+=============================================
+Total files scanned   : 208699
+Valid images          : 208694
+Corrupted images      : 0
+Invalid files         : 5
+=============================================
+CSV report            : datasets\metadata\cleaning_report.csv
+Quarantine directory  : datasets\quarantine
