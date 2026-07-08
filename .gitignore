@@ -56,9 +56,9 @@ datasets/processed/
 datasets/quarantine/
 
 # Generated reports
-datasets/metadata/*.csv
-datasets/metadata/*.json
-datasets/metadata/*.txt
+#datasets/metadata/*.csv
+#datasets/metadata/*.json
+#datasets/metadata/*.txt
 
 # Keep metadata folder structure
 !datasets/metadata/.gitkeep
