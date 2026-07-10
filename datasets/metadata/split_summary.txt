@@ -1,0 +1,7 @@
+PlantGuard AI - Dataset Split Summary
+========================================
+Total Classes:      64
+Train Images:       146054
+Validation Images:  31277
+Test Images:        31355
+Total Images:       208686
