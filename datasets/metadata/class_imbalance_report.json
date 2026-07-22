@@ -1,0 +1,20 @@
+{
+    "total_classes": 64,
+    "total_images": 146054,
+    "largest_class": {
+        "name": "Orange___Haunglongbing_(Citrus_greening)",
+        "count": 11564
+    },
+    "smallest_class": {
+        "name": "Lemon___diseased",
+        "count": 53
+    },
+    "mean_class_size": 2282.09,
+    "median_class_size": 1359.0,
+    "std_class_size": 2704.99,
+    "imbalance_ratio": 218.19,
+    "minority_threshold": 500,
+    "majority_threshold": 5000,
+    "num_minority_classes": 22,
+    "num_majority_classes": 7
+}
