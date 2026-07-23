@@ -1,0 +1,277 @@
+{
+    "total_classes": 64,
+    "total_images": 146054,
+    "healthy": {
+        "class_count": 24,
+        "image_count": 37768,
+        "class_percentage": 37.5,
+        "image_percentage": 25.86,
+        "classes": [
+            {
+                "class": "Soybean___healthy",
+                "count": 10689
+            },
+            {
+                "class": "Tomato___healthy",
+                "count": 5568
+            },
+            {
+                "class": "Apple___healthy",
+                "count": 3454
+            },
+            {
+                "class": "Blueberry___healthy",
+                "count": 3154
+            },
+            {
+                "class": "Pepper,_bell___healthy",
+                "count": 3103
+            },
+            {
+                "class": "Corn_(maize)___healthy",
+                "count": 2440
+            },
+            {
+                "class": "Pepper__bell___healthy",
+                "count": 2069
+            },
+            {
+                "class": "Cherry_(including_sour)___healthy",
+                "count": 1793
+            },
+            {
+                "class": "Strawberry___healthy",
+                "count": 957
+            },
+            {
+                "class": "Grape___healthy",
+                "count": 888
+            },
+            {
+                "class": "Raspberry___healthy",
+                "count": 779
+            },
+            {
+                "class": "Peach___healthy",
+                "count": 756
+            },
+            {
+                "class": "Potato___healthy",
+                "count": 532
+            },
+            {
+                "class": "Pongamia_Pinnata___healthy",
+                "count": 225
+            },
+            {
+                "class": "Pomegranate___healthy",
+                "count": 200
+            },
+            {
+                "class": "Jamun___healthy",
+                "count": 194
+            },
+            {
+                "class": "Gauva___healthy",
+                "count": 193
+            },
+            {
+                "class": "Arjun___healthy",
+                "count": 154
+            },
+            {
+                "class": "Alstonia_Scholaris___healthy",
+                "count": 124
+            },
+            {
+                "class": "Mango___healthy",
+                "count": 118
+            },
+            {
+                "class": "Lemon___healthy",
+                "count": 111
+            },
+            {
+                "class": "Basil___healthy_(P8)",
+                "count": 102
+            },
+            {
+                "class": "Jatropha___healthy",
+                "count": 93
+            },
+            {
+                "class": "Chinar___healthy",
+                "count": 72
+            }
+        ]
+    },
+    "diseased": {
+        "class_count": 40,
+        "image_count": 108286,
+        "class_percentage": 62.5,
+        "image_percentage": 74.14,
+        "classes": [
+            {
+                "class": "Orange___Haunglongbing_(Citrus_greening)",
+                "count": 11564
+            },
+            {
+                "class": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+                "count": 11249
+            },
+            {
+                "class": "Tomato___Bacterial_spot",
+                "count": 7444
+            },
+            {
+                "class": "Tomato___Late_blight",
+                "count": 6681
+            },
+            {
+                "class": "Tomato___Septoria_leaf_spot",
+                "count": 6198
+            },
+            {
+                "class": "Tomato___Target_Spot",
+                "count": 4914
+            },
+            {
+                "class": "Peach___Bacterial_spot",
+                "count": 4823
+            },
+            {
+                "class": "Tomato___Tomato_YellowLeaf_Curl_Virus",
+                "count": 4491
+            },
+            {
+                "class": "Squash___Powdery_mildew",
+                "count": 3853
+            },
+            {
+                "class": "Tomato___Spider_mites Two-spotted_spider_mite",
+                "count": 3519
+            },
+            {
+                "class": "Potato___Early_blight",
+                "count": 3500
+            },
+            {
+                "class": "Potato___Late_blight",
+                "count": 3500
+            },
+            {
+                "class": "Tomato___Early_blight",
+                "count": 3500
+            },
+            {
+                "class": "Tomato___Leaf_Mold",
+                "count": 3332
+            },
+            {
+                "class": "Grape___Esca_(Black_Measles)",
+                "count": 2905
+            },
+            {
+                "class": "Corn_(maize)___Common_rust",
+                "count": 2503
+            },
+            {
+                "class": "Grape___Black_rot",
+                "count": 2478
+            },
+            {
+                "class": "Tomato___Spider_mites_Two_spotted_spider_mite",
+                "count": 2346
+            },
+            {
+                "class": "Strawberry___Leaf_scorch",
+                "count": 2328
+            },
+            {
+                "class": "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
+                "count": 2259
+            },
+            {
+                "class": "Cherry_(including_sour)___Powdery_mildew",
+                "count": 2209
+            },
+            {
+                "class": "Pepper,_bell___Bacterial_spot",
+                "count": 2093
+            },
+            {
+                "class": "Corn_(maize)___Northern_Leaf_Blight",
+                "count": 2068
+            },
+            {
+                "class": "Pepper__bell___Bacterial_spot",
+                "count": 1395
+            },
+            {
+                "class": "Apple___Apple_scab",
+                "count": 1323
+            },
+            {
+                "class": "Tomato___Tomato_mosaic_virus",
+                "count": 1305
+            },
+            {
+                "class": "Apple___Black_rot",
+                "count": 1304
+            },
+            {
+                "class": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+                "count": 1077
+            },
+            {
+                "class": "Apple___Cedar_apple_rust",
+                "count": 577
+            },
+            {
+                "class": "Jamun___diseased",
+                "count": 241
+            },
+            {
+                "class": "Pongamia_Pinnata___diseased",
+                "count": 192
+            },
+            {
+                "class": "Pomegranate___diseased",
+                "count": 189
+            },
+            {
+                "class": "Mango___diseased",
+                "count": 185
+            },
+            {
+                "class": "Alstonia_Scholaris___diseased",
+                "count": 177
+            },
+            {
+                "class": "Arjun___diseased",
+                "count": 162
+            },
+            {
+                "class": "Gauva___diseased",
+                "count": 98
+            },
+            {
+                "class": "Jatropha___diseased",
+                "count": 86
+            },
+            {
+                "class": "Chinar___diseased",
+                "count": 84
+            },
+            {
+                "class": "Bael___diseased",
+                "count": 81
+            },
+            {
+                "class": "Lemon___diseased",
+                "count": 53
+            }
+        ]
+    },
+    "detection_keyword": "healthy"
+}

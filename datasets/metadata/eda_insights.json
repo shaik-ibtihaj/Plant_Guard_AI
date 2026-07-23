@@ -1,0 +1,341 @@
+{
+    "generated_at": "2026-07-23T23:53:42.097089Z",
+    "schema_version": "1.0",
+    "project": "PlantGuard AI",
+    "phase": "Phase 4 — Training Pipeline Preparation",
+    "dataset_statistics": {
+        "class_statistics": {
+            "total_classes": 64,
+            "total_images_train_split": 146054,
+            "healthy_classes": 24,
+            "diseased_classes": 40,
+            "healthy_class_percentage": 37.5,
+            "diseased_class_percentage": 62.5,
+            "healthy_image_count": 37768,
+            "diseased_image_count": 108286,
+            "healthy_image_percentage": 25.86,
+            "diseased_image_percentage": 74.14,
+            "largest_class": {
+                "name": "Orange___Haunglongbing_(Citrus_greening)",
+                "count": 11564
+            },
+            "smallest_class": {
+                "name": "Lemon___diseased",
+                "count": 53
+            },
+            "mean_class_size": 2282.09,
+            "median_class_size": 1359.0,
+            "std_class_size": 2704.99,
+            "coefficient_of_variation_pct": 118.53,
+            "imbalance_ratio": 218.19,
+            "imbalance_severity": "Critical",
+            "imbalance_severity_note": "Imbalance ratio 218.2x is critical. Weighted loss, oversampling, and aggressive augmentation are required.",
+            "minority_classes_count": 22,
+            "majority_classes_count": 7,
+            "minority_threshold_used": 500,
+            "majority_threshold_used": 5000
+        },
+        "resolution_statistics": {
+            "total_images_full_dataset": 208686,
+            "corrupted_images": 0,
+            "data_quality_note": "Dataset is clean — 0 corrupted images detected.",
+            "width": {
+                "min": 256.0,
+                "max": 6000.0,
+                "mean": 379.7,
+                "median": 256.0,
+                "std": 833.79
+            },
+            "height": {
+                "min": 256.0,
+                "max": 4000.0,
+                "mean": 336.63,
+                "median": 256.0,
+                "std": 543.48
+            },
+            "aspect_ratio": {
+                "min": 0.63,
+                "max": 1.5,
+                "mean": 1.01,
+                "median": 1.0,
+                "std": 0.07
+            },
+            "resolution": {
+                "min": 65536.0,
+                "max": 24000000.0,
+                "mean": 580961.26,
+                "median": 65536.0,
+                "std": 3474299.75
+            },
+            "dominant_shape_note": "Dataset is predominantly square (256×256 px). Standard square-crop resizing is appropriate.",
+            "median_width_px": 256,
+            "median_height_px": 256
+        },
+        "source_statistics": {
+            "num_source_datasets": 3,
+            "total_images_across_sources": 208694,
+            "dominant_source": "plantvillage_extra",
+            "sources": [
+                {
+                    "dataset": "plantvillage_extra",
+                    "image_count": 162916,
+                    "percentage": 78.06
+                },
+                {
+                    "dataset": "PlantVillage",
+                    "image_count": 41276,
+                    "percentage": 19.78
+                },
+                {
+                    "dataset": "Plantleaves",
+                    "image_count": 4502,
+                    "percentage": 2.16
+                }
+            ],
+            "multi_source_note": "Dataset aggregated from 3 sources. 'plantvillage_extra' contributes the most images. Domain shift across sources may affect model generalisation."
+        }
+    },
+    "training_recommendations": [
+        {
+            "priority": "Critical",
+            "category": "Loss Function",
+            "recommendation": "Use Focal Loss (gamma=2, alpha tuned per class) instead of standard cross-entropy. Imbalance ratio is 218.2x — standard CE will over-fit to majority classes."
+        },
+        {
+            "priority": "High",
+            "category": "Sampling",
+            "recommendation": "22 minority classes (≤500 images) detected. Use WeightedRandomSampler in PyTorch DataLoader to oversample minority classes during training."
+        },
+        {
+            "priority": "Medium",
+            "category": "Training Duration",
+            "recommendation": "Dataset has 146,054 training images. Start with 30–50 epochs and use early stopping (patience=5) to avoid over-training."
+        },
+        {
+            "priority": "Medium",
+            "category": "Learning Rate",
+            "recommendation": "Use CosineAnnealingLR or OneCycleLR scheduler. Initial LR: 1e-3 (scratch) or 1e-4 (fine-tuning pretrained). Warm-up for 3–5 epochs."
+        },
+        {
+            "priority": "Medium",
+            "category": "Batch Size",
+            "recommendation": "Batch size 32 is recommended for 224×224 inputs on a single GPU. Increase to 64 if GPU VRAM ≥ 16 GB. Use gradient accumulation if VRAM is limited."
+        },
+        {
+            "priority": "Low",
+            "category": "Compute Efficiency",
+            "recommendation": "Enable AMP (torch.cuda.amp.autocast) for ~2× training speed-up on NVIDIA GPUs with Tensor Cores (Volta+)."
+        },
+        {
+            "priority": "Low",
+            "category": "Validation",
+            "recommendation": "Validate every epoch. Track macro-averaged F1 and per-class recall alongside accuracy — accuracy is misleading under class imbalance."
+        }
+    ],
+    "augmentation_recommendations": {
+        "augmentation_target_per_minority_class": 2000,
+        "max_augmentation_multiplier": 37.7,
+        "train_transforms": [
+            "RandomHorizontalFlip(p=0.5)",
+            "RandomVerticalFlip(p=0.5)",
+            "RandomRotation(degrees=30)",
+            "ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.05)",
+            "RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1))",
+            "RandomResizedCrop(size=224, scale=(0.8, 1.0))",
+            "Normalize(mean=[0.2297, 0.2633, 0.2349], std=[0.1375, 0.1606, 0.1249])"
+        ],
+        "val_transforms": [
+            "Resize(256)",
+            "CenterCrop(224)",
+            "Normalize(mean=[0.2297, 0.2633, 0.2349], std=[0.1375, 0.1606, 0.1249])"
+        ],
+        "test_transforms": [
+            "Resize(256)",
+            "CenterCrop(224)",
+            "Normalize(mean=[0.2297, 0.2633, 0.2349], std=[0.1375, 0.1606, 0.1249])"
+        ],
+        "minority_class_strategy": [
+            "Augment all 22 minority classes (≤500 images) to ~2000 images.",
+            "Maximum augmentation multiplier needed: ×37.7 (for 'Lemon___diseased' with 53 images).",
+            "Apply ElasticTransform and GridDistortion for additional visual diversity.",
+            "Consider MixUp or CutMix at the batch level (alpha=0.4) for regularisation."
+        ],
+        "normalization_values": {
+            "mean": [
+                0.2297,
+                0.2633,
+                0.2349
+            ],
+            "std": [
+                0.1375,
+                0.1606,
+                0.1249
+            ],
+            "source": "datasets/metadata/rgb_stats.json (computed from train split)"
+        },
+        "advanced_techniques": [
+            "RandAugment(n=2, m=9) — automatic policy search, reduces manual tuning.",
+            "TrivialAugmentWide — state-of-the-art single-policy augmentation.",
+            "MixUp (alpha=0.4) — improves calibration and generalisation."
+        ]
+    },
+    "class_weight_recommendations": {
+        "formula": "weight_c = N_total / (N_classes × N_c)   [sklearn 'balanced' mode]",
+        "formula_variables": {
+            "N_total": "Total training images",
+            "N_classes": "Total number of classes",
+            "N_c": "Images in class c"
+        },
+        "implementation": "sklearn.utils.class_weight.compute_class_weight(class_weight='balanced', classes=np.arange(N_classes), y=labels)",
+        "pytorch_usage": "pos_weights = torch.tensor(weights).to(device); criterion = nn.CrossEntropyLoss(weight=pos_weights)",
+        "recommended_loss_strategy": "Focal Loss (gamma=2) with per-class alpha weights derived from inverse frequency.",
+        "top_5_highest_weight_minority_classes": [
+            {
+                "class_name": "Lemon___diseased",
+                "image_count": 53,
+                "weight": 43.0584
+            },
+            {
+                "class_name": "Chinar___healthy",
+                "image_count": 72,
+                "weight": 31.6957
+            },
+            {
+                "class_name": "Bael___diseased",
+                "image_count": 81,
+                "weight": 28.174
+            },
+            {
+                "class_name": "Chinar___diseased",
+                "image_count": 84,
+                "weight": 27.1678
+            },
+            {
+                "class_name": "Jatropha___diseased",
+                "image_count": 86,
+                "weight": 26.536
+            }
+        ],
+        "top_5_lowest_weight_majority_classes": [
+            {
+                "class_name": "Orange___Haunglongbing_(Citrus_greening)",
+                "image_count": 11564,
+                "weight": 0.1973
+            },
+            {
+                "class_name": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+                "image_count": 11249,
+                "weight": 0.2029
+            },
+            {
+                "class_name": "Soybean___healthy",
+                "image_count": 10689,
+                "weight": 0.2135
+            },
+            {
+                "class_name": "Tomato___Bacterial_spot",
+                "image_count": 7444,
+                "weight": 0.3066
+            },
+            {
+                "class_name": "Tomato___Late_blight",
+                "image_count": 6681,
+                "weight": 0.3416
+            }
+        ],
+        "expected_weight_range": {
+            "min_weight": 0.1973,
+            "max_weight": 43.0584,
+            "ratio": 218.24
+        },
+        "note": "Persist final weights to datasets/metadata/class_weights.json after running scripts/analysis/compute_class_weights.py."
+    },
+    "input_size_recommendations": {
+        "native_median_resolution": "256×256",
+        "native_min_resolution": "256×256",
+        "mean_aspect_ratio": 1.01,
+        "primary_recommended_size": 224,
+        "secondary_size": 256,
+        "high_resolution_size": 384,
+        "resize_note": "Native median resolution is 256×256 px. Resizing to 224×224 requires a slight downscale (≈12.5% reduction). No quality-degrading upscaling is required.",
+        "resize_pipeline": [
+            "Train:  RandomResizedCrop(224) — preserves scale variation.",
+            "Val/Test: Resize(256) → CenterCrop(224)."
+        ],
+        "rationale": {
+            "224×224": "Matches EfficientNet-B0, ResNet50, ViT-B/16 expected input. Optimal for batch size 32 on 8 GB VRAM.",
+            "256×256": "Minimal downscale — preserves more detail. ~25% more VRAM required vs 224.",
+            "384×384": "EfficientNet-B4+ territory. ~3× VRAM vs 224; use only with ≥16 GB VRAM."
+        }
+    },
+    "model_recommendations": [
+        {
+            "rank": 1,
+            "architecture": "EfficientNet-B0",
+            "type": "Transfer Learning (ImageNet)",
+            "input_size": "224×224",
+            "parameters_M": 5.3,
+            "recommended": true,
+            "reason": "Best accuracy/efficiency trade-off for 64-class classification. Pre-trained on ImageNet, fine-tune all layers for 146,054 images. Compound scaling generalises well to leaf disease patterns.",
+            "training_config": {
+                "pretrained": true,
+                "fine_tune_all_layers": true,
+                "freeze_backbone_first_n_epochs": 3,
+                "learning_rate": "1e-4 (backbone) / 1e-3 (head)",
+                "dropout": 0.3
+            },
+            "imbalance_note": "All models must use Focal Loss or weighted CE due to critical class imbalance (ratio 218.2x)."
+        },
+        {
+            "rank": 2,
+            "architecture": "ResNet-50",
+            "type": "Transfer Learning (ImageNet)",
+            "input_size": "224×224",
+            "parameters_M": 25.6,
+            "recommended": true,
+            "reason": "Strong benchmark architecture. Residual connections mitigate vanishing gradients on deep features. Widely cited in plant disease literature.",
+            "training_config": {
+                "pretrained": true,
+                "fine_tune_all_layers": true,
+                "freeze_backbone_first_n_epochs": 5,
+                "learning_rate": "1e-4",
+                "dropout": 0.4
+            },
+            "imbalance_note": "All models must use Focal Loss or weighted CE due to critical class imbalance (ratio 218.2x)."
+        },
+        {
+            "rank": 3,
+            "architecture": "ViT-B/16",
+            "type": "Vision Transformer (ImageNet-21k)",
+            "input_size": "224×224",
+            "parameters_M": 86.6,
+            "recommended": true,
+            "reason": "Transformer attention captures global texture patterns critical for fine-grained disease discrimination. Best suited after baseline CNN models are established. Requires more VRAM.",
+            "training_config": {
+                "pretrained": true,
+                "fine_tune_all_layers": true,
+                "freeze_backbone_first_n_epochs": 5,
+                "learning_rate": "1e-4",
+                "dropout": 0.1,
+                "label_smoothing": 0.1
+            },
+            "imbalance_note": "All models must use Focal Loss or weighted CE due to critical class imbalance (ratio 218.2x)."
+        },
+        {
+            "rank": 4,
+            "architecture": "Custom CNN (Baseline)",
+            "type": "Trained from scratch",
+            "input_size": "224×224",
+            "parameters_M": "~2–5",
+            "recommended": false,
+            "reason": "Useful as a performance baseline. With 146,054 training images, transfer learning will significantly outperform a scratch-trained CNN. Implement first to establish a lower-bound benchmark.",
+            "training_config": {
+                "pretrained": false,
+                "learning_rate": "1e-3",
+                "dropout": 0.5,
+                "weight_decay": "1e-4"
+            },
+            "imbalance_note": "All models must use Focal Loss or weighted CE due to critical class imbalance (ratio 218.2x)."
+        }
+    ]
+}
