@@ -1,2 +1,5 @@
-"""Plant Guard AI - Database Models Package"""
-# TODO: Define SQLAlchemy ORM models here
+"""Database models."""
+
+from .prediction import PredictionRecord
+
+__all__ = ["PredictionRecord"]

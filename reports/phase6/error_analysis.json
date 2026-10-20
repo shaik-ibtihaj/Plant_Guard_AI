@@ -1,0 +1,709 @@
+{
+  "total_errors": 117,
+  "error_rate": 0.9140625,
+  "expected_calibration_error": 0.05681676958920434,
+  "dominant_confusions": [
+    {
+      "true_class": "Pepper__bell___healthy",
+      "predicted_class": "Apple___healthy",
+      "count": 2
+    },
+    {
+      "true_class": "Chinar___diseased",
+      "predicted_class": "Chinar___healthy",
+      "count": 2
+    },
+    {
+      "true_class": "Peach___healthy",
+      "predicted_class": "Apple___healthy",
+      "count": 2
+    },
+    {
+      "true_class": "Soybean___healthy",
+      "predicted_class": "Apple___Black_rot",
+      "count": 2
+    },
+    {
+      "true_class": "Pepper,_bell___healthy",
+      "predicted_class": "Apple___Black_rot",
+      "count": 2
+    },
+    {
+      "true_class": "Peach___Bacterial_spot",
+      "predicted_class": "Apple___healthy",
+      "count": 2
+    },
+    {
+      "true_class": "Cherry_(including_sour)___Powdery_mildew",
+      "predicted_class": "Apple___Black_rot",
+      "count": 2
+    },
+    {
+      "true_class": "Arjun___healthy",
+      "predicted_class": "Pongamia_Pinnata___healthy",
+      "count": 2
+    },
+    {
+      "true_class": "Tomato___Tomato_mosaic_virus",
+      "predicted_class": "Arjun___diseased",
+      "count": 2
+    },
+    {
+      "true_class": "Tomato___Spider_mites Two-spotted_spider_mite",
+      "predicted_class": "Pepper__bell___healthy",
+      "count": 1
+    },
+    {
+      "true_class": "Tomato___Tomato_YellowLeaf_Curl_Virus",
+      "predicted_class": "Apple___healthy",
+      "count": 1
+    },
+    {
+      "true_class": "Tomato___Tomato_YellowLeaf_Curl_Virus",
+      "predicted_class": "Tomato___Target_Spot",
+      "count": 1
+    },
+    {
+      "true_class": "Pongamia_Pinnata___diseased",
+      "predicted_class": "Pepper__bell___healthy",
+      "count": 1
+    },
+    {
+      "true_class": "Squash___Powdery_mildew",
+      "predicted_class": "Pepper__bell___healthy",
+      "count": 1
+    },
+    {
+      "true_class": "Potato___Late_blight",
+      "predicted_class": "Grape___healthy",
+      "count": 1
+    },
+    {
+      "true_class": "Apple___Black_rot",
+      "predicted_class": "Apple___healthy",
+      "count": 1
+    },
+    {
+      "true_class": "Raspberry___healthy",
+      "predicted_class": "Jatropha___diseased",
+      "count": 1
+    },
+    {
+      "true_class": "Apple___Apple_scab",
+      "predicted_class": "Apple___healthy",
+      "count": 1
+    },
+    {
+      "true_class": "Tomato___Bacterial_spot",
+      "predicted_class": "Apple___Black_rot",
+      "count": 1
+    },
+    {
+      "true_class": "Cherry_(including_sour)___healthy",
+      "predicted_class": "Apple___healthy",
+      "count": 1
+    }
+  ],
+  "highest_confidence_errors": [
+    {
+      "sample_index": 114,
+      "true_index": 57,
+      "true_class": "Tomato___Spider_mites Two-spotted_spider_mite",
+      "predicted_index": 39,
+      "predicted_class": "Pepper__bell___healthy",
+      "confidence": 0.05183616653084755,
+      "correct": false,
+      "top5_indices": [
+        39,
+        59,
+        3,
+        61,
+        19
+      ],
+      "top5_classes": [
+        "Pepper__bell___healthy",
+        "Tomato___Target_Spot",
+        "Apple___Black_rot",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "Gauva___diseased"
+      ],
+      "image_path": "datasets\\processed\\test\\Tomato___Spider_mites Two-spotted_spider_mite\\815f01f8-4e09-47ee-abfb-a8035a86a080___Com.G_SpM_FL 8590.JPG"
+    },
+    {
+      "sample_index": 120,
+      "true_index": 60,
+      "true_class": "Tomato___Tomato_YellowLeaf_Curl_Virus",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.046337563544511795,
+      "correct": false,
+      "top5_indices": [
+        5,
+        3,
+        24,
+        2,
+        39
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Apple___Black_rot",
+        "Grape___healthy",
+        "Apple___Apple_scab",
+        "Pepper__bell___healthy"
+      ],
+      "image_path": "datasets\\processed\\test\\Tomato___Tomato_YellowLeaf_Curl_Virus\\16fd1a50-5fbc-42e3-9b6c-46af87dd424c___YLCV_GCREC 2870.JPG"
+    },
+    {
+      "sample_index": 121,
+      "true_index": 60,
+      "true_class": "Tomato___Tomato_YellowLeaf_Curl_Virus",
+      "predicted_index": 59,
+      "predicted_class": "Tomato___Target_Spot",
+      "confidence": 0.04424092918634415,
+      "correct": false,
+      "top5_indices": [
+        59,
+        39,
+        14,
+        2,
+        5
+      ],
+      "top5_classes": [
+        "Tomato___Target_Spot",
+        "Pepper__bell___healthy",
+        "Chinar___healthy",
+        "Apple___Apple_scab",
+        "Apple___healthy"
+      ],
+      "image_path": "datasets\\processed\\test\\Tomato___Tomato_YellowLeaf_Curl_Virus\\6d1de1e6-b895-4032-a256-dbb68a746684___YLCV_GCREC 2813.JPG"
+    },
+    {
+      "sample_index": 79,
+      "true_index": 39,
+      "true_class": "Pepper__bell___healthy",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.043679166585206985,
+      "correct": false,
+      "top5_indices": [
+        5,
+        3,
+        14,
+        27,
+        23
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Apple___Black_rot",
+        "Chinar___healthy",
+        "Jatropha___diseased",
+        "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)"
+      ],
+      "image_path": "datasets\\processed\\test\\Pepper__bell___healthy\\fc18f16b-d707-4811-ad96-445590b4346f___JR_HL 5870_1.JPG"
+    },
+    {
+      "sample_index": 84,
+      "true_index": 42,
+      "true_class": "Pongamia_Pinnata___diseased",
+      "predicted_index": 39,
+      "predicted_class": "Pepper__bell___healthy",
+      "confidence": 0.04055534675717354,
+      "correct": false,
+      "top5_indices": [
+        39,
+        8,
+        40,
+        14,
+        27
+      ],
+      "top5_classes": [
+        "Pepper__bell___healthy",
+        "Bael___diseased",
+        "Pomegranate___diseased",
+        "Chinar___healthy",
+        "Jatropha___diseased"
+      ],
+      "image_path": "datasets\\processed\\test\\Pongamia_Pinnata___diseased\\0019_0014.JPG"
+    },
+    {
+      "sample_index": 78,
+      "true_index": 39,
+      "true_class": "Pepper__bell___healthy",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.04042963311076164,
+      "correct": false,
+      "top5_indices": [
+        5,
+        39,
+        61,
+        2,
+        59
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Pepper__bell___healthy",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "Apple___Apple_scab",
+        "Tomato___Target_Spot"
+      ],
+      "image_path": "datasets\\processed\\test\\Pepper__bell___healthy\\95c1d651-27ca-49cd-95f9-fa7a42a14d49___JR_HL 8221_1.JPG"
+    },
+    {
+      "sample_index": 27,
+      "true_index": 13,
+      "true_class": "Chinar___diseased",
+      "predicted_index": 14,
+      "predicted_class": "Chinar___healthy",
+      "confidence": 0.0397375263273716,
+      "correct": false,
+      "top5_indices": [
+        14,
+        16,
+        7,
+        37,
+        2
+      ],
+      "top5_classes": [
+        "Chinar___healthy",
+        "Corn_(maize)___Common_rust",
+        "Arjun___healthy",
+        "Pepper,_bell___healthy",
+        "Apple___Apple_scab"
+      ],
+      "image_path": "datasets\\processed\\test\\Chinar___diseased\\0022_0029.JPG"
+    },
+    {
+      "sample_index": 98,
+      "true_index": 49,
+      "true_class": "Squash___Powdery_mildew",
+      "predicted_index": 39,
+      "predicted_class": "Pepper__bell___healthy",
+      "confidence": 0.039169322699308395,
+      "correct": false,
+      "top5_indices": [
+        39,
+        61,
+        24,
+        2,
+        27
+      ],
+      "top5_classes": [
+        "Pepper__bell___healthy",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "Grape___healthy",
+        "Apple___Apple_scab",
+        "Jatropha___diseased"
+      ],
+      "image_path": "datasets\\processed\\test\\Squash___Powdery_mildew\\1d765e78-47f2-443f-a0da-effb1aaf7722___MD_Powd.M 0456.JPG"
+    },
+    {
+      "sample_index": 91,
+      "true_index": 45,
+      "true_class": "Potato___Late_blight",
+      "predicted_index": 24,
+      "predicted_class": "Grape___healthy",
+      "confidence": 0.03899582102894783,
+      "correct": false,
+      "top5_indices": [
+        24,
+        3,
+        61,
+        5,
+        14
+      ],
+      "top5_classes": [
+        "Grape___healthy",
+        "Apple___Black_rot",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "Apple___healthy",
+        "Chinar___healthy"
+      ],
+      "image_path": "datasets\\processed\\test\\Potato___Late_blight\\42cd0719-199a-40a8-aaa0-228bb80e1832___RS_LB 4440.JPG"
+    },
+    {
+      "sample_index": 7,
+      "true_index": 3,
+      "true_class": "Apple___Black_rot",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.03854062035679817,
+      "correct": false,
+      "top5_indices": [
+        5,
+        3,
+        39,
+        14,
+        27
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Apple___Black_rot",
+        "Pepper__bell___healthy",
+        "Chinar___healthy",
+        "Jatropha___diseased"
+      ],
+      "image_path": "datasets\\processed\\test\\Apple___Black_rot\\cffe2528-d760-4e77-a117-a0253ba3af6f___JR_FrgE.S 8801.JPG"
+    },
+    {
+      "sample_index": 71,
+      "true_index": 35,
+      "true_class": "Peach___healthy",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.03812078759074211,
+      "correct": false,
+      "top5_indices": [
+        5,
+        27,
+        24,
+        19,
+        16
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Jatropha___diseased",
+        "Grape___healthy",
+        "Gauva___diseased",
+        "Corn_(maize)___Common_rust"
+      ],
+      "image_path": "datasets\\processed\\test\\Peach___healthy\\7ff2a455-a9d4-43ca-9c1b-6819adaa3c59___Rutg._HL 3623_final_masked.jpg"
+    },
+    {
+      "sample_index": 94,
+      "true_index": 47,
+      "true_class": "Raspberry___healthy",
+      "predicted_index": 27,
+      "predicted_class": "Jatropha___diseased",
+      "confidence": 0.03808354586362839,
+      "correct": false,
+      "top5_indices": [
+        27,
+        59,
+        62,
+        3,
+        61
+      ],
+      "top5_classes": [
+        "Jatropha___diseased",
+        "Tomato___Target_Spot",
+        "Tomato___Tomato_mosaic_virus",
+        "Apple___Black_rot",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "image_path": "datasets\\processed\\test\\Raspberry___healthy\\1f7b581b-0d3c-4b15-ba28-caedd1d0895c___Mary_HL 9300_final_masked.jpg"
+    },
+    {
+      "sample_index": 70,
+      "true_index": 35,
+      "true_class": "Peach___healthy",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.03569434583187103,
+      "correct": false,
+      "top5_indices": [
+        5,
+        19,
+        27,
+        46,
+        44
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Gauva___diseased",
+        "Jatropha___diseased",
+        "Potato___healthy",
+        "Potato___Early_blight"
+      ],
+      "image_path": "datasets\\processed\\test\\Peach___healthy\\64460ebe-57cb-4222-be13-02a5c43a1be7___Rutg._HL 3732_final_masked.jpg"
+    },
+    {
+      "sample_index": 4,
+      "true_index": 2,
+      "true_class": "Apple___Apple_scab",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.035357583314180374,
+      "correct": false,
+      "top5_indices": [
+        5,
+        3,
+        4,
+        24,
+        27
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Apple___Black_rot",
+        "Apple___Cedar_apple_rust",
+        "Grape___healthy",
+        "Jatropha___diseased"
+      ],
+      "image_path": "datasets\\processed\\test\\Apple___Apple_scab\\bf99a731-b08d-47af-8d65-196bbb0ca2e3___FREC_Scab 3344_final_masked.jpg"
+    },
+    {
+      "sample_index": 105,
+      "true_index": 52,
+      "true_class": "Tomato___Bacterial_spot",
+      "predicted_index": 3,
+      "predicted_class": "Apple___Black_rot",
+      "confidence": 0.03499707579612732,
+      "correct": false,
+      "top5_indices": [
+        3,
+        24,
+        39,
+        14,
+        5
+      ],
+      "top5_classes": [
+        "Apple___Black_rot",
+        "Grape___healthy",
+        "Pepper__bell___healthy",
+        "Chinar___healthy",
+        "Apple___healthy"
+      ],
+      "image_path": "datasets\\processed\\test\\Tomato___Bacterial_spot\\b2e02801-9306-4703-b1cd-d9247fa17a11___GCREC_Bact.Sp 6296.JPG"
+    },
+    {
+      "sample_index": 24,
+      "true_index": 12,
+      "true_class": "Cherry_(including_sour)___healthy",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.03438591957092285,
+      "correct": false,
+      "top5_indices": [
+        5,
+        3,
+        27,
+        10,
+        35
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Apple___Black_rot",
+        "Jatropha___diseased",
+        "Blueberry___healthy",
+        "Peach___healthy"
+      ],
+      "image_path": "datasets\\processed\\test\\Cherry_(including_sour)___healthy\\26f3d1b1-10a5-4e25-875c-e64b391e11bc___JR_HL 4068_final_masked.jpg"
+    },
+    {
+      "sample_index": 90,
+      "true_index": 45,
+      "true_class": "Potato___Late_blight",
+      "predicted_index": 3,
+      "predicted_class": "Apple___Black_rot",
+      "confidence": 0.03426235541701317,
+      "correct": false,
+      "top5_indices": [
+        3,
+        39,
+        61,
+        5,
+        35
+      ],
+      "top5_classes": [
+        "Apple___Black_rot",
+        "Pepper__bell___healthy",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "Apple___healthy",
+        "Peach___healthy"
+      ],
+      "image_path": "datasets\\processed\\test\\Potato___Late_blight\\317a40c6-c4d8-4b4e-9878-4f742e7f409a___RS_LB 4462.JPG"
+    },
+    {
+      "sample_index": 109,
+      "true_index": 54,
+      "true_class": "Tomato___Late_blight",
+      "predicted_index": 6,
+      "predicted_class": "Arjun___diseased",
+      "confidence": 0.034135010093450546,
+      "correct": false,
+      "top5_indices": [
+        6,
+        39,
+        3,
+        59,
+        61
+      ],
+      "top5_classes": [
+        "Arjun___diseased",
+        "Pepper__bell___healthy",
+        "Apple___Black_rot",
+        "Tomato___Target_Spot",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "image_path": "datasets\\processed\\test\\Tomato___Late_blight\\873aa4b3-61f8-473a-8fd3-b39ede9376c4___RS_Late.B 4829_2.JPG"
+    },
+    {
+      "sample_index": 45,
+      "true_index": 22,
+      "true_class": "Grape___Esca_(Black_Measles)",
+      "predicted_index": 5,
+      "predicted_class": "Apple___healthy",
+      "confidence": 0.0341176763176918,
+      "correct": false,
+      "top5_indices": [
+        5,
+        27,
+        39,
+        8,
+        16
+      ],
+      "top5_classes": [
+        "Apple___healthy",
+        "Jatropha___diseased",
+        "Pepper__bell___healthy",
+        "Bael___diseased",
+        "Corn_(maize)___Common_rust"
+      ],
+      "image_path": "datasets\\processed\\test\\Grape___Esca_(Black_Measles)\\c65bf67d-61a9-43ef-b218-ea0a383ffc96___FAM_B.Msls 4313_final_masked.jpg"
+    },
+    {
+      "sample_index": 35,
+      "true_index": 17,
+      "true_class": "Corn_(maize)___Northern_Leaf_Blight",
+      "predicted_index": 3,
+      "predicted_class": "Apple___Black_rot",
+      "confidence": 0.03410136327147484,
+      "correct": false,
+      "top5_indices": [
+        3,
+        5,
+        27,
+        24,
+        62
+      ],
+      "top5_classes": [
+        "Apple___Black_rot",
+        "Apple___healthy",
+        "Jatropha___diseased",
+        "Grape___healthy",
+        "Tomato___Tomato_mosaic_virus"
+      ],
+      "image_path": "datasets\\processed\\test\\Corn_(maize)___Northern_Leaf_Blight\\37da66ff-ddaf-4848-a9df-f48bd43da831___RS_NLB 4214_final_masked.jpg"
+    },
+    {
+      "sample_index": 107,
+      "true_index": 53,
+      "true_class": "Tomato___Early_blight",
+      "predicted_index": 61,
+      "predicted_class": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+      "confidence": 0.03376048058271408,
+      "correct": false,
+      "top5_indices": [
+        61,
+        39,
+        5,
+        3,
+        16
+      ],
+      "top5_classes": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+        "Pepper__bell___healthy",
+        "Apple___healthy",
+        "Apple___Black_rot",
+        "Corn_(maize)___Common_rust"
+      ],
+      "image_path": "datasets\\processed\\test\\Tomato___Early_blight\\b60702b4-a7dd-4201-bfcc-4a13c7dcc44f___RS_Erly.B 7657_2.JPG"
+    },
+    {
+      "sample_index": 99,
+      "true_index": 49,
+      "true_class": "Squash___Powdery_mildew",
+      "predicted_index": 3,
+      "predicted_class": "Apple___Black_rot",
+      "confidence": 0.03352918103337288,
+      "correct": false,
+      "top5_indices": [
+        3,
+        2,
+        43,
+        14,
+        59
+      ],
+      "top5_classes": [
+        "Apple___Black_rot",
+        "Apple___Apple_scab",
+        "Pongamia_Pinnata___healthy",
+        "Chinar___healthy",
+        "Tomato___Target_Spot"
+      ],
+      "image_path": "datasets\\processed\\test\\Squash___Powdery_mildew\\b95f16ae-97aa-42ef-abf6-8974b81bea83___UMD_Powd.M 0220_1.JPG"
+    },
+    {
+      "sample_index": 9,
+      "true_index": 4,
+      "true_class": "Apple___Cedar_apple_rust",
+      "predicted_index": 39,
+      "predicted_class": "Pepper__bell___healthy",
+      "confidence": 0.03347581624984741,
+      "correct": false,
+      "top5_indices": [
+        39,
+        24,
+        27,
+        6,
+        4
+      ],
+      "top5_classes": [
+        "Pepper__bell___healthy",
+        "Grape___healthy",
+        "Jatropha___diseased",
+        "Arjun___diseased",
+        "Apple___Cedar_apple_rust"
+      ],
+      "image_path": "datasets\\processed\\test\\Apple___Cedar_apple_rust\\f416a057-5518-4df4-8c12-660cd636166c___FREC_C.Rust 4412.JPG"
+    },
+    {
+      "sample_index": 116,
+      "true_index": 58,
+      "true_class": "Tomato___Spider_mites_Two_spotted_spider_mite",
+      "predicted_index": 59,
+      "predicted_class": "Tomato___Target_Spot",
+      "confidence": 0.03314806520938873,
+      "correct": false,
+      "top5_indices": [
+        59,
+        4,
+        39,
+        5,
+        3
+      ],
+      "top5_classes": [
+        "Tomato___Target_Spot",
+        "Apple___Cedar_apple_rust",
+        "Pepper__bell___healthy",
+        "Apple___healthy",
+        "Apple___Black_rot"
+      ],
+      "image_path": "datasets\\processed\\test\\Tomato___Spider_mites_Two_spotted_spider_mite\\2191359a-e985-4bf9-abe2-8f4e00685701___Com.G_SpM_FL 9645_1.JPG"
+    },
+    {
+      "sample_index": 97,
+      "true_index": 48,
+      "true_class": "Soybean___healthy",
+      "predicted_index": 3,
+      "predicted_class": "Apple___Black_rot",
+      "confidence": 0.03296550363302231,
+      "correct": false,
+      "top5_indices": [
+        3,
+        5,
+        27,
+        14,
+        6
+      ],
+      "top5_classes": [
+        "Apple___Black_rot",
+        "Apple___healthy",
+        "Jatropha___diseased",
+        "Chinar___healthy",
+        "Arjun___diseased"
+      ],
+      "image_path": "datasets\\processed\\test\\Soybean___healthy\\5d3fb1de-f93a-4c3e-acd1-7a1082cc214b___RS_HL 6423.JPG"
+    }
+  ]
+}

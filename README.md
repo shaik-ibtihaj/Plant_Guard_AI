@@ -70,14 +70,16 @@ cd Plant_Guard_AI
 
 ```bash
 pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 ## Run Backend
 
 ```bash
-cd backend
-uvicorn app.main:app --reload
+uvicorn backend.app.main:app --reload
 ```
+
+API documentation is available at `http://localhost:8000/docs`.
 
 ## Run Frontend
 
@@ -126,14 +128,14 @@ PLANT_GUARD_AI/
 
 ---
 
-# 🧠 Planned Models
+# 🧠 Implemented Models
 
-| Model | Architecture | Purpose |
-|---------|-------------|-------------|
-| CNN | Custom CNN | Baseline |
-| EfficientNet-B0 | Transfer Learning | Primary Model |
-| ResNet50 | Transfer Learning | Benchmark |
-| ViT-B/16 | Vision Transformer | Advanced Benchmark |
+| Model | Architecture | Purpose | Code |
+|---------|-------------|-------------|---:|
+| CNN | Custom CNN | Baseline | ✅ |
+| EfficientNet-B0 | Transfer Learning | Production candidate | ✅ |
+| ResNet50 | Transfer Learning | Benchmark | ✅ |
+| ViT-B/16 | Vision Transformer | Advanced benchmark | ✅ |
 
 ---
 
@@ -847,34 +849,99 @@ READY FOR PHASE 5
 | Phase 4.4 — Image Resolution Analysis | ✅ |
 | Phase 4.5 — Sample Visualization | ✅ |
 | Phase 4.6 — EDA Reporting & Insights | ✅ |
-| Phase 5 — Model Development & Training | ⏳ |
-| Phase 6 — Model Evaluation | ⏳ |
-| Phase 7 — Explainable AI (Grad-CAM) | ⏳ |
-| Phase 8 — Severity Assessment | ⏳ |
-| Phase 9 — Backend API | ⏳ |
-| Phase 10 — Frontend | ⏳ |
+| Phase 5 — Model Development & Training | ✅ Completed (constrained CPU benchmark) |
+| Phase 6 — Model Evaluation | ✅ Completed (constrained test evaluation) |
+| Phase 7 — Explainable AI (Grad-CAM) | ✅ CNN and ViT explanations |
+| Phase 8 — Severity Assessment | ✅ Mask-based area assessment |
+| Phase 9 — Backend API | ✅ API integration complete |
+| Phase 10 — Frontend | ✅ Responsive analysis dashboard and API integration |
 | Phase 11 — Deployment & CI/CD | ⏳ |
 
 ---
 
-# 🚀 Next Phase
+# 🚀 Phase 5 — Model Development & Training
 
-## Phase 5 — Model Development & Training
+| Task | Implementation | Execution |
+|---|---:|---:|
+| 5.1 PyTorch Dataset Class | ✅ | ✅ Dataset verified |
+| 5.2 DataLoader Pipeline | ✅ | ✅ Splits verified |
+| 5.3 Class Weights | ✅ | ✅ 64 classes |
+| 5.4 Data Augmentation | ✅ | ✅ Configured |
+| 5.5 Baseline CNN | ✅ | ✅ CPU benchmark |
+| 5.6 EfficientNet-B0 | ✅ | ✅ CPU benchmark |
+| 5.7 ResNet50 | ✅ | ✅ CPU benchmark |
+| 5.8 ViT-B/16 | ✅ | ✅ CPU benchmark |
+| 5.9 Model Comparison | ✅ | ✅ Report generated |
+| 5.10 Production Selection | ✅ | ✅ EfficientNet-B0 selected |
 
-Upcoming Tasks:
+The data pipeline uses the RGB statistics in
+`datasets/metadata/rgb_stats.json`, enforces one class mapping across all
+splits, and supports reproducible inverse-frequency sampling. Validation and
+test transforms are deterministic.
 
-```text
-5.1 Build PyTorch Dataset Class
-5.2 Create DataLoader Pipeline
-5.3 Compute Class Weights
-5.4 Implement Data Augmentation
-5.5 Train Baseline CNN
-5.6 Train EfficientNet-B0
-5.7 Train ResNet50
-5.8 Train ViT-B/16
-5.9 Compare Models
-5.10 Select Production Model
+```python
+from ai.data import create_data_pipeline
+
+pipeline = create_data_pipeline()
+images, labels = next(iter(pipeline.train))
 ```
+
+All four architectures use the same training and evaluation pipeline. It
+provides AdamW optimization, validation-based learning-rate scheduling, CUDA
+mixed precision, early stopping, atomic checkpoint saving, and accuracy,
+precision, recall, macro-F1, weighted-F1, and confusion-matrix evaluation.
+
+Run each experiment from the repository root in a CUDA-enabled environment:
+
+```bash
+python -m ai.training.run_phase5 --epochs 30 --batch-size 16 --workers 4
+```
+
+The command above performs tasks 5.5–5.10 end to end. Models can also be run
+individually when experiments need different batch sizes:
+
+```bash
+python -m ai.training.train --model baseline_cnn --epochs 30 --batch-size 32 --workers 4
+python -m ai.training.train --model efficientnet_b0 --epochs 30 --batch-size 32 --workers 4
+python -m ai.training.train --model resnet50 --epochs 30 --batch-size 32 --workers 4
+python -m ai.training.train --model vit_b_16 --epochs 30 --batch-size 16 --workers 4
+```
+
+Compare the completed runs and select the production checkpoint:
+
+```bash
+python -m ai.training.compare models/runs/baseline_cnn_metrics.json models/runs/efficientnet_b0_metrics.json models/runs/resnet50_metrics.json models/runs/vit_b_16_metrics.json
+```
+
+The comparison ranks models by validation macro-F1, then weighted-F1,
+accuracy, and loss. It generates `reports/model_comparison.json`,
+`reports/model_comparison.md`, `models/production_model.json`, and copies the
+winner to `models/best_model.pth`. Checkpoints and per-run histories remain
+ignored by Git because they are generated artifacts.
+
+### Phase 5 Benchmark Results
+
+The reproducible CPU benchmark was executed on October 20, 2026 with seed 42,
+PyTorch 2.13 CPU, 224×224 inputs, one epoch, four training images per class
+(256 total), two validation images per class (128 total), weighted sampling,
+ImageNet-pretrained transfer models, and frozen transfer backbones.
+
+| Rank | Model | Accuracy | Macro Precision | Macro Recall | Macro F1 | Loss |
+|---:|---|---:|---:|---:|---:|---:|
+| 1 | EfficientNet-B0 | 10.94% | 3.20% | 10.94% | 4.74% | 4.0638 |
+| 2 | ResNet50 | 4.69% | 2.07% | 4.69% | 1.94% | 4.0826 |
+| 3 | ViT-B/16 | 1.56% | 0.95% | 1.56% | 1.07% | 4.2351 |
+| 4 | Baseline CNN | 3.12% | 0.41% | 3.12% | 0.64% | 4.8331 |
+
+**Selected model:** EfficientNet-B0, ranked by validation macro-F1. The
+checkpoint is stored at `models/best_model.pth`, its manifest at
+`models/production_model.json`, and the complete ranking at
+`reports/model_comparison.md`.
+
+> **Scope warning:** Phase 5 is complete as a constrained benchmark, but the
+> selected checkpoint is not ready for real-world deployment. Its 10.94%
+> validation accuracy reflects the deliberately small CPU run. A CUDA-backed
+> full-dataset run using the 30-epoch command above is required before release.
 
 ### Phase 5 Goals
 
@@ -884,3 +951,200 @@ Upcoming Tasks:
 - Compare performance using Accuracy, Precision, Recall, and F1-Score
 - Select the best-performing production model
 - Prepare for Explainable AI integration (Grad-CAM)
+
+---
+
+# 📊 Phase 6 — Model Evaluation
+
+## Completion Status
+
+| Task | Status |
+|---|---:|
+| 6.1 Evaluate selected checkpoint on held-out test data | ✅ |
+| 6.2 Compute top-1/top-5 and aggregate metrics | ✅ |
+| 6.3 Generate per-class metrics and confusion matrices | ✅ |
+| 6.4 Export individual predictions and error analysis | ✅ |
+| 6.5 Generate calibration and misclassification diagnostics | ✅ |
+| 6.6 Produce the final evaluation report | ✅ |
+
+The selected EfficientNet-B0 checkpoint was evaluated on a deterministic,
+class-balanced test subset containing two images from each of the 64 classes
+(128 images total), matching the constrained Phase 5 validation scope.
+
+| Metric | Result |
+|---|---:|
+| Test loss | 4.0514 |
+| Top-1 accuracy | 8.59% |
+| Top-5 accuracy | 25.00% |
+| Macro F1 | 5.28% |
+| Weighted F1 | 5.28% |
+| Mean confidence | 2.91% |
+| Expected calibration error (ECE) | 5.68% |
+| Misclassifications | 117 / 128 (91.41%) |
+
+Generated artifacts:
+
+- `reports/phase6/test_metrics.json`
+- `reports/phase6/per_class_metrics.csv`
+- `reports/phase6/confusion_matrix.png`
+- `reports/phase6/confusion_matrix_normalized.png`
+- `reports/phase6/predictions.csv`
+- `reports/phase6/error_analysis.json`
+- `reports/phase6/reliability_diagram.png`
+- `reports/phase6/misclassification_gallery.png`
+- `reports/phase6/evaluation_report.md`
+
+The evaluation command is reproducible and supports either a deterministic
+per-class subset or the entire split. Run it without
+`--eval-samples-per-class` after full GPU training to satisfy the production
+release gate:
+
+```bash
+python -m ai.training.evaluate --model efficientnet_b0 --checkpoint models/best_model.pth --output reports/phase6/test_metrics_full.json --split test --batch-size 32 --workers 4 --artifacts-dir reports/phase6/full
+```
+
+> Phase 6 is complete for the constrained CPU benchmark scope. These results
+> validate the evaluation workflow, not production model quality. The
+> one-epoch Phase 5 checkpoint is not deployable; full training and complete
+> test-split certification remain mandatory release gates.
+
+---
+
+# 🔎 Phase 7 — Explainable AI (Grad-CAM)
+
+Phase 7 implements class-specific Grad-CAM overlays for the baseline CNN,
+EfficientNet-B0, and ResNet50, plus gradient-weighted patch-token attribution
+for ViT-B/16. The command reports the predicted class and confidence, saves an
+RGB overlay, and writes a JSON sidecar with the explained class and input
+paths. By default, it explains the predicted class; pass `--target-class` to
+explain a chosen class index.
+
+```bash
+python -m ai.explainability.gradcam --model efficientnet_b0 --checkpoint models/best_model.pth --image datasets/processed/test/Alstonia_Scholaris___diseased/0014_0002.JPG --output reports/phase7/gradcam_overlay.png
+```
+
+The `GradCAM` and `TransformerTokenCAM` classes can also be used directly.
+`get_target_layer(model, model_name)` selects the final convolutional block or
+ViT encoder block as appropriate. The transformer heatmap uses class-token
+gradients projected onto the square patch grid; it is a gradient attribution
+map and does not represent a segmented disease region.
+
+The example output is saved as `reports/phase7/gradcam_overlay.png`, with
+metadata at `reports/phase7/gradcam_overlay.json`. This example uses the
+center crop presented to the model. It uses the constrained one-epoch
+checkpoint and is a pipeline demonstration. Its heatmap is diffuse and
+includes substantial background response, so it should not be interpreted as
+a reliable disease localization until the model is fully trained and the
+explanation is reviewed on representative images.
+
+---
+
+# 🌿 Phase 8 — Severity Assessment
+
+Phase 8 provides an end-to-end mask-based area assessment. It measures lesion
+pixels inside a leaf mask, maps the affected-area ratio to Healthy, Mild,
+Moderate, Severe, or Critical, highlights the measured region, and writes a
+JSON report with the measurements and conservative recommendation. The
+classifier confidence is recorded but does not determine severity. Without a
+measured area, `SeverityAssessor` returns Unknown.
+
+```python
+from ai.severity import SeverityAssessor
+
+assessor = SeverityAssessor()
+result = assessor.assess_with_details(
+    prediction_confidence=0.91,
+    affected_area_ratio=0.24,
+)
+```
+
+For image assessment, provide pixel-aligned grayscale masks. Any non-black
+pixel is treated as foreground:
+
+```bash
+python -m ai.severity.assessment --image leaf.jpg --leaf-mask leaf_mask.png --lesion-mask lesion_mask.png --prediction-confidence 0.91 --output reports/phase8/severity_overlay.png
+```
+
+The overlay highlights lesion pixels that overlap the leaf mask; the JSON
+sidecar records leaf and affected pixel counts, affected-area ratio, severity,
+and recommendation. Default boundaries are 5%, 20%, and 40%: zero is
+Healthy; up to 5% is Mild; over 5% through 20% is Moderate; over 20% through
+40% is Severe; and over 40% is Critical. Thresholds are configurable through
+`SeverityAssessor(area_thresholds=...)`.
+
+The project does not yet generate leaf or lesion masks automatically. The
+assessment is therefore auditable when masks are supplied, but depends on
+their quality. Thresholds are initial heuristics and have not been validated
+for field use; recommendations do not prescribe pesticides or replace expert
+agronomic advice.
+
+---
+
+# 🚀 Phase 9 — Backend API
+
+Phase 9 is complete. The FastAPI service loads the selected checkpoint once at
+startup and exposes image classification through `POST /api/v1/predict`.
+Upload a JPEG, PNG, or WEBP image as multipart field `file`; optional `top_k`
+is limited to 1–10. Responses include the predicted class, confidence, top
+classes, image dimensions, checkpoint epoch, and inference time. Uploaded
+images are processed in memory and are not saved by the API.
+
+```bash
+uvicorn backend.app.main:app --reload
+```
+
+- `GET /health` is the process liveness check.
+- `GET /health/ready` and `GET /api/v1/health` report model and database readiness.
+- `POST /api/v1/predict` performs image classification.
+- `POST /api/v1/explain` returns a Grad-CAM/ViT attribution overlay as base64 PNG.
+- `POST /api/v1/severity` assesses supplied, image-aligned leaf and lesion masks.
+- `GET /api/v1/records` lists metadata history; `DELETE /api/v1/records/{record_id}` removes a record.
+- `GET /docs` provides interactive OpenAPI documentation.
+
+Configure the model with `PLANT_GUARD_MODEL` and
+`PLANT_GUARD_CHECKPOINT`. Optional path settings include
+`PLANT_GUARD_CLASS_MAPPING` and `PLANT_GUARD_RGB_STATS`. `DATABASE_URL` selects
+the database (local default: SQLite at `data/plant_guard.db`; Compose uses
+PostgreSQL). Set `PLANT_GUARD_API_KEY` to enable `X-API-Key` authentication;
+production requires at least 32 characters. `PLANT_GUARD_RATE_LIMIT_PER_MINUTE`,
+`PLANT_GUARD_IMAGE_SIZE`,
+`PLANT_GUARD_MAX_UPLOAD_BYTES`, and comma-separated
+`PLANT_GUARD_CORS_ORIGINS` adjust preprocessing and service limits. Paths may
+be absolute or relative to the repository root. A missing or invalid model
+keeps the liveness endpoint available while readiness and analysis return
+HTTP 503. The fixed-window limiter is in-memory and per process; use a shared
+gateway or store for multi-worker or replicated deployments.
+
+The container can be launched from the `docker` directory with
+`docker compose up --build`. The backend image is built from the repository
+root so it includes the AI package, model checkpoint, class mapping, and RGB
+statistics.
+
+Phase 9 is complete as an API/integration milestone, not as a production
+diagnostic release. Severity depends on supplied masks; authentication is a
+shared API key rather than user/role management, and the rate limiter is
+in-memory per process. The checked-in benchmark checkpoint has very low
+accuracy. Full training and field validation remain release gates; outputs are
+advisory and not a diagnosis.
+
+---
+
+# 🌱 Phase 10 — Frontend
+
+The React + TypeScript frontend provides a responsive workspace for plant
+diagnosis, mask-based severity measurement, and metadata history. Diagnosis
+supports JPEG/PNG/WEBP uploads up to 10 MB, top-five predictions, confidence,
+and on-demand Grad-CAM/ViT overlays. Severity measurement accepts an image
+with pixel-aligned leaf and lesion masks. History can be refreshed and records
+deleted; the original uploaded images are never retained by the API.
+
+Run the frontend from the `frontend` directory with `npm install` and
+`npm run dev`. Vite proxies API and health requests to `http://localhost:8000`.
+In Docker Compose, the included Nginx configuration serves the app and proxies
+API/health requests to the backend service. Optionally provide an API key in
+the in-app API access setting; it is stored in browser local storage and sent
+as `X-API-Key`.
+
+The UI presents model results as advisory estimates, not diagnoses. Severity
+depends on user-supplied masks; this frontend does not generate masks or
+provide treatment prescriptions.

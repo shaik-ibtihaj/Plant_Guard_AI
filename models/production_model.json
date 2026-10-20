@@ -1,0 +1,17 @@
+{
+  "model": "efficientnet_b0",
+  "checkpoint": "models\\best_model.pth",
+  "selected_by": "validation.f1_macro",
+  "selected_at": "2026-10-20T09:57:36.408371+00:00",
+  "validation_metrics": {
+    "accuracy": 0.109375,
+    "precision_macro": 0.0319822104978355,
+    "recall_macro": 0.109375,
+    "f1_macro": 0.04740632631257631,
+    "f1_weighted": 0.04740632631257631,
+    "loss": 4.063821345567703,
+    "precision_weighted": 0.0319822104978355,
+    "recall_weighted": 0.109375,
+    "samples": 128
+  }
+}

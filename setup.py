@@ -51,9 +51,10 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            # TODO: Add CLI entry points
-            # "plant-guard-train=ai.training.train:main",
-            # "plant-guard-infer=ai.training.inference:main",
+            "plant-guard-train=ai.training.train:main",
+            "plant-guard-evaluate=ai.training.evaluate:main",
+            "plant-guard-compare=ai.training.compare:main",
+            "plant-guard-phase5=ai.training.run_phase5:main",
         ],
     },
 )

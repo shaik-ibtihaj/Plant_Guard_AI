@@ -1,0 +1,10 @@
+{
+  "model": "efficientnet_b0",
+  "image": "datasets\\processed\\test\\Alstonia_Scholaris___diseased\\0014_0002.JPG",
+  "predicted_class": "Pepper__bell___healthy",
+  "predicted_index": 39,
+  "confidence": 0.03133200481534004,
+  "explained_class": "Pepper__bell___healthy",
+  "explained_index": 39,
+  "overlay": "reports\\phase7\\gradcam_overlay.png"
+}

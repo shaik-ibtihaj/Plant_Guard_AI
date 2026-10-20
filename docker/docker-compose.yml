@@ -6,21 +6,25 @@ services:
   # ─────────────────────────────────────────
   backend:
     build:
-      context: ../backend
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: backend/Dockerfile
     container_name: plant_guard_backend
     ports:
       - "8000:8000"
     environment:
       - APP_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/plant_guard
-      # TODO: Add additional environment variables (API keys, secrets, etc.)
+      - PLANT_GUARD_CORS_ORIGINS=http://localhost:3000
+      - DATABASE_URL=postgresql+psycopg://postgres:postgres@db:5432/plant_guard
     volumes:
-      - ../backend:/app
-      - ../models:/app/models
-    depends_on:
-      - db
+      - ../backend/app:/app/backend/app:ro
+      - ../ai:/app/ai:ro
+      - ../models/best_model.pth:/app/models/best_model.pth:ro
+      - ../models/production_model.json:/app/models/production_model.json:ro
+      - ../datasets/metadata:/app/datasets/metadata:ro
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - plant_guard_network
 
@@ -54,12 +58,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d plant_guard"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
     restart: unless-stopped
     networks:
       - plant_guard_network
 
-  # TODO: Add Redis for caching/task queue (Phase 2)
-  # TODO: Add Celery worker for async inference tasks (Phase 2)
+# Redis and a task queue can be added if inference becomes asynchronous.
 
 networks:
   plant_guard_network:

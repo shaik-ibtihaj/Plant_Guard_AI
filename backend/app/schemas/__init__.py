@@ -1,2 +1,5 @@
-"""Plant Guard AI - Pydantic Schemas Package"""
-# TODO: Define Pydantic request/response schemas here
+"""API request and response schemas."""
+
+from .prediction import PredictionCandidate, PredictionResponse
+
+__all__ = ["PredictionCandidate", "PredictionResponse"]

@@ -126,3 +126,7 @@ logs/
 tmp/
 temp/
 .cache/
+data/
+*.db
+*.sqlite
+*.sqlite3
