@@ -1,5 +1,10 @@
 import { ChangeEvent, CSSProperties, DragEvent, FormEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import './styles.css';
+import {
+  formatClassName,
+  formatConfidence,
+  validatePlantImage,
+} from './utils';
 
 type PredictionCandidate = { class_name: string; class_index: number; confidence: number };
 type Prediction = {
@@ -17,9 +22,6 @@ type HistoryRecord = {
 type Notice = { tone: 'error' | 'success'; text: string } | null;
 
 const API_KEY_STORAGE = 'plant-guard-api-key';
-const confidencePercent = (value: number) => `${(value * 100).toFixed(1)}%`;
-const readableClass = (value: string) => value.replace(/___/g, ' · ').replace(/_/g, ' ');
-
 function Icon({ name, size = 20 }: { name: string; size?: number }) {
   const paths: Record<string, ReactNode> = {
     leaf: <><path d="M20.8 3.2C11.5 2.6 5.2 5.1 4.1 11c-.7 3.8 2.2 6.1 5.6 5.4 5.9-1.1 8.4-7.4 11.1-13.2Z"/><path d="M3 21c3.4-5.5 7.3-9.3 13-13"/></>,
@@ -81,12 +83,8 @@ function App() {
   const setSelectedImage = (file?: File) => {
     setNotice(null); setPrediction(null); setExplanation(null); setSeverity(null);
     if (!file) return;
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      setNotice({ tone: 'error', text: 'Choose a JPEG, PNG, or WEBP image.' }); return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      setNotice({ tone: 'error', text: 'Image must be smaller than 10 MB.' }); return;
-    }
+    const validationMessage = validatePlantImage(file);
+    if (validationMessage) { setNotice({ tone: 'error', text: validationMessage }); return; }
     setImage(file); setLeafMask(null); setLesionMask(null);
   };
 
@@ -178,12 +176,12 @@ function App() {
             <div className="result-column">
               {!prediction ? <div className="empty-result card"><div className="empty-orbit"><Icon name="sprout" size={34} /></div><span className="eyebrow">YOUR ANALYSIS</span><h2>Insight starts<br />with one leaf.</h2><p>Your prediction, confidence, and visual explanation will appear here.</p><div className="empty-foot"><span>01</span> Upload an image <i /> <span>02</span> Review insight</div></div> : <div className="result-card card">
                 <div className="result-label"><span className="result-check"><Icon name="check" size={15} /></span>ANALYSIS COMPLETE<span className="result-time">{prediction.inference_time_ms.toFixed(0)} ms</span></div>
-                <div className="prediction-main"><div><span className="field-label">LIKELY IDENTIFICATION</span><h2>{readableClass(prediction.predicted_class)}</h2></div><div className="confidence-ring" style={{ '--confidence': `${prediction.confidence * 100}%` } as CSSProperties}><div><strong>{confidencePercent(prediction.confidence)}</strong><span>confidence</span></div></div></div>
+                <div className="prediction-main"><div><span className="field-label">LIKELY IDENTIFICATION</span><h2>{formatClassName(prediction.predicted_class)}</h2></div><div className="confidence-ring" style={{ '--confidence': `${prediction.confidence * 100}%` } as CSSProperties}><div><strong>{formatConfidence(prediction.confidence)}</strong><span>confidence</span></div></div></div>
                 <div className="confidence-note">Model confidence is an estimate, not a measure of disease severity.</div>
                 <div className="top-list-title">OTHER POSSIBLE MATCHES</div>
-                {prediction.top_predictions.slice(1).map((candidate) => <div className="candidate" key={candidate.class_index}><span>{readableClass(candidate.class_name)}</span><div className="candidate-track"><i style={{ width: `${Math.max(candidate.confidence * 100, 2)}%` }} /></div><b>{confidencePercent(candidate.confidence)}</b></div>)}
+                {prediction.top_predictions.slice(1).map((candidate) => <div className="candidate" key={candidate.class_index}><span>{formatClassName(candidate.class_name)}</span><div className="candidate-track"><i style={{ width: `${Math.max(candidate.confidence * 100, 2)}%` }} /></div><b>{formatConfidence(candidate.confidence)}</b></div>)}
                 <div className="result-actions"><button className="secondary-button" onClick={explain} disabled={Boolean(busy)}>{busy === 'explain' ? <span className="spinner dark" /> : <Icon name="scan" size={17} />}Show visual explanation</button><button className="text-button" onClick={() => { setPrediction(null); setExplanation(null); }}>New analysis</button></div>
-                {explanation && <div className="explanation-panel"><div><strong>Visual explanation</strong><span>Highlighted regions influenced the model's {readableClass(explanation.explained_class)} estimate.</span></div><img src={`data:image/png;base64,${explanation.overlay_png_base64}`} alt="Grad-CAM attribution overlay" /></div>}
+                {explanation && <div className="explanation-panel"><div><strong>Visual explanation</strong><span>Highlighted regions influenced the model's {formatClassName(explanation.explained_class)} estimate.</span></div><img src={`data:image/png;base64,${explanation.overlay_png_base64}`} alt="Grad-CAM attribution overlay" /></div>}
                 <div className="advisory"><span>!</span><p><strong>Use as a starting point.</strong> Confirm with a local plant specialist before treating. This model has not been validated for field diagnosis.</p></div>
               </div>}
             </div>
@@ -194,7 +192,7 @@ function App() {
               <button className="primary-button" disabled={!image || !leafMask || !lesionMask || Boolean(busy)}>{busy === 'severity' ? <><span className="spinner" />Measuring area…</> : <>Assess affected area <Icon name="arrow" size={18} /></>}</button><div className="secure-note"><Icon name="shield" size={14} />Images and masks are not stored</div></form>
             <div className="card severity-result">{severity ? <><span className="eyebrow">AREA ASSESSMENT</span><h2>{String(severity.severity)}</h2><div className="severity-meter"><i style={{ width: `${Number(severity.affected_area_ratio) * 100}%` }} /></div><div className="area-stat"><strong>{(Number(severity.affected_area_ratio) * 100).toFixed(1)}%</strong><span>of measured leaf area affected</span></div><p>{String(severity.recommendation)}</p><div className="severity-foot">Based on supplied pixel masks · {Number(severity.affected_pixels).toLocaleString()} affected pixels</div></> : <><div className="empty-orbit"><Icon name="layers" size={32} /></div><span className="eyebrow">AREA, NOT CONFIDENCE</span><h2>A measured view<br />of visible damage.</h2><p>Upload matching masks to estimate how much of the leaf area is affected.</p><div className="mask-legend"><span><i className="legend-leaf" />Leaf area</span><span><i className="legend-lesion" />Lesion area</span></div></>}</div></section>}
 
-          {activeTab === 'history' && <section className="history-page"><div className="history-heading"><div><div className="eyebrow"><span className="eyebrow-line" />YOUR WORKSPACE</div><h1>Analysis <em>history.</em></h1><p>Recent results are saved as metadata only. Uploaded images are never retained.</p></div><button className="secondary-button" onClick={() => void loadHistory()}><Icon name="clock" size={17} />Refresh</button></div><div className="card history-card"><div className="history-table-head"><span>RESULT</span><span>TYPE</span><span>CONFIDENCE</span><span>DATE</span><span /></div>{busy === 'history' ? <div className="history-empty">Loading recent analyses…</div> : history.length === 0 ? <div className="history-empty"><div className="empty-orbit"><Icon name="clock" size={28} /></div><strong>No analysis history yet</strong><span>When you analyze a plant, the result will appear here.</span><button className="text-button" onClick={() => setActiveTab('diagnose')}>Start an analysis <Icon name="arrow" size={15} /></button></div> : history.map((item) => <div className="history-row" key={item.id}><strong>{readableClass(item.predicted_class)}</strong><span className="operation-tag">{item.operation}</span><b>{confidencePercent(item.confidence)}</b><time>{new Date(item.created_at).toLocaleString()}</time><button className="icon-button" onClick={() => void deleteHistoryRecord(item.id)} aria-label={`Delete record ${item.id}`}><Icon name="close" size={16} /></button></div>)}</div><div className="history-private"><Icon name="shield" size={16} />History contains predictions and measurements only—not your original photos.</div></section>}
+          {activeTab === 'history' && <section className="history-page"><div className="history-heading"><div><div className="eyebrow"><span className="eyebrow-line" />YOUR WORKSPACE</div><h1>Analysis <em>history.</em></h1><p>Recent results are saved as metadata only. Uploaded images are never retained.</p></div><button className="secondary-button" onClick={() => void loadHistory()}><Icon name="clock" size={17} />Refresh</button></div><div className="card history-card"><div className="history-table-head"><span>RESULT</span><span>TYPE</span><span>CONFIDENCE</span><span>DATE</span><span /></div>{busy === 'history' ? <div className="history-empty">Loading recent analyses…</div> : history.length === 0 ? <div className="history-empty"><div className="empty-orbit"><Icon name="clock" size={28} /></div><strong>No analysis history yet</strong><span>When you analyze a plant, the result will appear here.</span><button className="text-button" onClick={() => setActiveTab('diagnose')}>Start an analysis <Icon name="arrow" size={15} /></button></div> : history.map((item) => <div className="history-row" key={item.id}><strong>{formatClassName(item.predicted_class)}</strong><span className="operation-tag">{item.operation}</span><b>{formatConfidence(item.confidence)}</b><time>{new Date(item.created_at).toLocaleString()}</time><button className="icon-button" onClick={() => void deleteHistoryRecord(item.id)} aria-label={`Delete record ${item.id}`}><Icon name="close" size={16} /></button></div>)}</div><div className="history-private"><Icon name="shield" size={16} />History contains predictions and measurements only—not your original photos.</div></section>}
 
           <section className="settings-card"><div className="settings-icon"><Icon name="shield" size={18} /></div><div className="settings-copy"><strong>API access</strong><span>Enter a key only if your server requires one. It stays in this browser.</span></div><input id="api-key" type="password" autoComplete="off" placeholder="Optional API key" value={apiKey} onChange={(event) => setApiKey(event.target.value)} /><button onClick={saveKey}>Save key</button></section>
           <footer className="page-footer"><span>© {new Date().getFullYear()} Plant Guard AI</span><span>AI-assisted plant health · Advisory use only</span></footer>
